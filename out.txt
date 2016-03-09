@@ -1,0 +1,9 @@
+input dir: dataset
+output dir: .
+Processing:  english
+Output filename:  summary-english-truth.txt
+Filename: /home/ue/Documents/pan-2016-author-profiling/dataset/pan16-author-profiling-training-dataset-english-2016-02-29/6300ad90bbcee31349ffa0a071ca2041.xml Error: <class 'xml.etree.ElementTree.ParseError'>
+Processing:  dutch
+Output filename:  summary-dutch-truth.txt
+Processing:  spanish
+Output filename:  summary-spanish-truth.txt
