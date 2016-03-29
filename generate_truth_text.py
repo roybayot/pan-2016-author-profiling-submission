@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 #!/home/darklord/anaconda2/bin/python
 
 import sys
