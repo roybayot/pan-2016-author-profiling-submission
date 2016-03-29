@@ -65,7 +65,7 @@ def makePValMatrix(all_results):
         for key_2, y in zip(sorted_keys, i):
             treatment_1 = all_results[key_1]
             treatment_2 = all_results[key_2]
-            z_stat, p_val i= stats.ranksums(treatment_1, treatment_2)
+            z_stat, p_val = stats.ranksums(treatment_1, treatment_2)
             p_value_matrix[x,y] = p_val
     
     return p_value_matrix
@@ -91,7 +91,7 @@ def makeFeatureVec(words, model, num_features):
             featureVec = np.add(featureVec,model[word])
         else:
             wordsNotInDict.append(word)
-            featureVec = np.divide(featureVec,nwords)
+    featureVec = np.divide(featureVec,nwords)
     return featureVec, wordsNotInDict
 
 def getAvgFeatureVecs(all_texts, model, num_features):
@@ -106,4 +106,45 @@ def getAvgFeatureVecs(all_texts, model, num_features):
         
     return reviewFeatureVecs, lineOfWordsNotInDict
 
+def doSVMwithPoly(trainDataVecs, targetVec, source, num_features, task,\
+        num_folds=10, degrees=[1,2,3], C=[10**-1, 10, 10**3] ):
+    
+    poly_results = {}
+    for degree in degrees:
+        for one_C in C:
+            clf = svm.SVC(kernel='poly', degree=degree, coef0=one_C, gamma=1)
+            scores = cross_validation.cross_val_score(clf, trainDataVecs,\
+                                                      targetVec, cv=num_folds,\
+                                                      scoring=scoring_function)
 
+            string_pattern = "word2vec-source={} dims={} task={} kernel={} degree={} C={}"
+                                                                        
+            dict_key = string_pattern.format(source, num_features, task, \
+                                             "poly", degree, one_C)
+            poly_results[dict_key] = scores
+    return poly_results
+
+
+def doSVMwithRBF(trainDataVecs, targetVec, source, num_features, task,\
+                 num_folds=10, gammas=[1, 0.001], C = [10, 1000]):
+   
+    rbf_results = {}
+    for g in gammas:
+        for one_C in C:
+            clf = svm.SVC(kernel='rbf', gamma=g, C=one_C)
+            scores = cross_validation.cross_val_score(clf, trainDataVecs,\
+                                                      targetVec, cv=10,\
+                                                      scoring=scoring_function)
+            
+            string_pattern = "word2vec-source={} dims={} task={} kernel={} gamma={} C={}"
+            dict_key = string_pattern.format(source, num_features, task, \
+                                            "rbf",g, one_C)
+            rbf_results[dict_key] = scores
+    
+    return rbf_results
+
+
+def merge_two_dicts(x, y):
+    z = x.copy()
+    z.update(y)
+    return z
