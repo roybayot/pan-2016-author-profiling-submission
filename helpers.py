@@ -107,7 +107,8 @@ def getAvgFeatureVecs(all_texts, model, num_features):
     return reviewFeatureVecs, lineOfWordsNotInDict
 
 def doSVMwithPoly(trainDataVecs, targetVec, source, num_features, task,\
-        num_folds=10, degrees=[1,2,3], C=[10**-1, 10, 10**3] ):
+        num_folds=10, degrees=[1,2,3], C=[10**-1, 10, 10**3],\
+        scoring_function="accuracy"):
     
     poly_results = {}
     for degree in degrees:
@@ -126,7 +127,8 @@ def doSVMwithPoly(trainDataVecs, targetVec, source, num_features, task,\
 
 
 def doSVMwithRBF(trainDataVecs, targetVec, source, num_features, task,\
-                 num_folds=10, gammas=[1, 0.001], C = [10, 1000]):
+                 num_folds=10, gammas=[1, 0.001], C = [10, 1000],\
+                 scoring_function="accuracy"):
    
     rbf_results = {}
     for g in gammas:
