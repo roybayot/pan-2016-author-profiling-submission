@@ -31,6 +31,8 @@ from bs4 import BeautifulSoup
 
 reload(sys)
 sys.setdefaultencoding("ISO-8859-1")
+#sys.setdefaultencoding("UTF-8")
+#sys.setdefaultencoding("latin-1")
 
 
 def dirExists(inputDir):
@@ -133,12 +135,15 @@ def writeOneSummary(outputFilename, oneTruthFile, allPaths):
             allText = ""
 
 # 			print "Going in for loop"
+           
             for doc in a:
                 clean = bleach.clean(doc, tags=[], strip=True)
                 allText = allText + clean
-
-            # 	clean = clean.encode('utf-8')
+            #allText = allText.encode('ISO-8859-1')
             allText = allText.encode('utf-8')
+            #allText = allText.encode('latin-1')
+            #allText = allText.replace("\"", " ")
+            #allText = allText.replace("...", " ")
 # 			print "Out of loop, writing"								
             data = [fileName, thisGender, thisAgeGroup, allText]
             tsv_writer(data, outputFilename)
